@@ -34,7 +34,10 @@ public class Task {
      * @String title - параметр для опису задачі
      * @int time - параметр для часу виконання задачі
      * */
-    public Task(String title, int time) {
+    public Task(String title, int time) throws IllegalArgumentException {
+        if (time < 0) {
+            throw new IllegalArgumentException("Time must be greater than zero");
+        }
         this.title = title;
         this.time = time;
     }
@@ -45,7 +48,10 @@ public class Task {
      * @int end - параметр для часу закінчення виконання задачі
      * @int interval - параметр для часу інтервалу виконання задачі
      * */
-    public Task(String title, int start, int end, int interval) {
+    public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
+        if (start < 0 || end < 0 || interval < 0) {
+            throw new IllegalArgumentException("Time must be greater than zero");
+        }
         this.title = title;
         this.start = start;
         this.end = end;

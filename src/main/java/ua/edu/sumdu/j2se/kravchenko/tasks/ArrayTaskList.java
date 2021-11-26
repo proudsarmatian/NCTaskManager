@@ -70,9 +70,9 @@ public class ArrayTaskList {
      * Задача повертається лише у випадку якщо вона там є.
      * @int index - параметр для індексу задачі в масиві.
      * */
-    public Task getTask(int index) {
+    public Task getTask(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index > this.size) {
-            throw new NoSuchElementException();
+            throw new IndexOutOfBoundsException();
         }
 
         return this.taskList[index];
