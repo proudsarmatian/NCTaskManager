@@ -74,22 +74,4 @@ public class ArrayTaskList extends AbstractTaskList {
 
         return this.taskList[index];
     }
-
-    /** Публічний метод визначення задач, що відбудуться в певному проміжку часу.
-     * Метод повертає масив задач, що задовольняють інтервалу часу.
-     * @int from - параметр для передачі початку інтервалу часу.
-     * @int to - параметр для передачі кінця інтервалу часу.
-     * */
-    public ArrayTaskList incoming(int from, int to) {
-        ArrayTaskList newList = new ArrayTaskList();
-
-        for (int i = 0; i < this.size; ++i) {
-            if (this.taskList[i].isActive() && this.taskList[i].getStartTime() > from &&
-                    this.taskList[i].getEndTime() < to) {
-                newList.add(this.taskList[i]);
-            }
-        }
-
-        return newList;
-    }
 }

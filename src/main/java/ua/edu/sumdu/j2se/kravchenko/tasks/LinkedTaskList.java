@@ -119,19 +119,4 @@ public class LinkedTaskList extends AbstractTaskList{
             throw new NoSuchElementException();
         }
     }
-
-    public LinkedTaskList incoming(int from, int to) {
-        LinkedTaskList newList = new LinkedTaskList();
-        Node current = head;
-
-        for (int i = 0; i < size; ++i) {
-            if (current.task.isActive() && current.task.getStartTime() > from &&
-                    current.task.getEndTime() < to) {
-                newList.add(current.task);
-            }
-            current = current.next;
-        }
-
-        return newList;
-    }
 }
