@@ -2,7 +2,7 @@ package ua.edu.sumdu.j2se.kravchenko.tasks;
 
 import java.util.NoSuchElementException;
 
-public class LinkedTaskList {
+public class LinkedTaskList extends AbstractTaskList{
     private class Node {
         Task task;
         Node prev;
@@ -20,7 +20,6 @@ public class LinkedTaskList {
     }
 
     private Node head, tail = null;
-    private int size;
 
     public int size() {
         return this.size;

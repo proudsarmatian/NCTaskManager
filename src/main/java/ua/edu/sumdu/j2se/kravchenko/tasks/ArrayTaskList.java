@@ -9,10 +9,7 @@ import java.util.NoSuchElementException;
  * @author Artem Kravchenko
  */
 
-public class ArrayTaskList {
-    /** size - приватне поле для збереження дійсного розміру масиву */
-    private int size;
-
+public class ArrayTaskList extends AbstractTaskList {
     /** taskList - поле типу Task для створення тілу масиву початковим розміром size */
     private Task[] taskList = new Task[size];
 
