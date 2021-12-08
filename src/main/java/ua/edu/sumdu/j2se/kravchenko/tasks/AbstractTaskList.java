@@ -1,7 +1,8 @@
 package ua.edu.sumdu.j2se.kravchenko.tasks;
 
-import java.util.NoSuchElementException;
+import java.util.Arrays;
 import java.util.Iterator;
+import java.util.stream.Stream;
 
 public abstract class AbstractTaskList implements Iterable<Task> {
     protected int size;
@@ -10,31 +11,22 @@ public abstract class AbstractTaskList implements Iterable<Task> {
     public abstract void add(Task task);
     public abstract boolean remove(Task task);
     public abstract Task getTask(int index);
+    public abstract ListTypes.types getType();
 
-    public ListTypes.types listType (AbstractTaskList list) {
-        if (list instanceof ArrayTaskList) {
-            return ListTypes.types.ARRAY;
+    public Stream<Task> getStream() {
+        Task[] array = new Task[this.size()];
+        for (int i = 0; i < array.length; ++i) {
+            array[i] = getTask(i);
         }
-        else if (list instanceof LinkedTaskList) {
-            return ListTypes.types.LINKED;
-        }
-        else {
-            throw new NoSuchElementException();
-        }
+        return Arrays.stream(array);
     }
 
-    public AbstractTaskList incoming(int from, int to){
-        AbstractTaskList newList = TaskListFactory.createTaskList(listType(this));
+    public final AbstractTaskList incoming(int from, int to) {
+        AbstractTaskList newList = TaskListFactory.createTaskList(getType());
 
-        for (int i = 0; i < this.size; ++i) {
-            if (this.getTask(i).isActive() && this.getTask(i).getStartTime() > from &&
-                    this.getTask(i).getEndTime() < to) {
-                newList.add(this.getTask(i));
-            }
-        }
-
+        getStream().filter(task -> task.nextTimeAfter(from) >= from && task.nextTimeAfter(from) <= to).forEach(newList::add);
         return newList;
-    };
+    }
 
     @Override
     public Iterator<Task> iterator() {
@@ -54,7 +46,7 @@ public abstract class AbstractTaskList implements Iterable<Task> {
 
     @Override
     protected Object clone() throws CloneNotSupportedException {
-        AbstractTaskList newList = TaskListFactory.createTaskList(listType(this));
+        AbstractTaskList newList = TaskListFactory.createTaskList(getType());
 
         for (Task t : this) {
             newList.add(t);

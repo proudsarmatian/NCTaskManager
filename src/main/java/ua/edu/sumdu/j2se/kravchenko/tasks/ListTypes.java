@@ -5,4 +5,9 @@ public class ListTypes {
         ARRAY,
         LINKED
     }
+
+    @Override
+    public String toString() {
+        return super.toString();
+    }
 }

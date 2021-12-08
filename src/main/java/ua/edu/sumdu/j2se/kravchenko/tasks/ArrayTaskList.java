@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.kravchenko.tasks;
 
 import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Class ArrayTaskList - класс для зберігання массиву задач.
@@ -77,6 +78,16 @@ public class ArrayTaskList extends AbstractTaskList implements Cloneable {
         }
 
         return this.taskList[index];
+    }
+
+    @Override
+    public Stream<Task> getStream() {
+        return super.getStream();
+    }
+
+    @Override
+    public ListTypes.types getType() {
+        return ListTypes.types.ARRAY;
     }
 
     @Override

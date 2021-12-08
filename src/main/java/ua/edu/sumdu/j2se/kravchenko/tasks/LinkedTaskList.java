@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.kravchenko.tasks;
 
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
 
 public class LinkedTaskList  extends AbstractTaskList implements Cloneable {
@@ -125,6 +126,16 @@ public class LinkedTaskList  extends AbstractTaskList implements Cloneable {
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    public Stream<Task> getStream() {
+        return super.getStream();
+    }
+
+    @Override
+    public ListTypes.types getType() {
+        return ListTypes.types.LINKED;
     }
 
     @Override
