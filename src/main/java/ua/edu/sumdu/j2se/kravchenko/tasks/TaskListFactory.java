@@ -7,12 +7,10 @@ public class TaskListFactory {
         if (type == type.ARRAY) {
             ArrayTaskList list = new ArrayTaskList();
             return list;
-        }
-        else if(type == type.LINKED) {
+        } else if (type == type.LINKED) {
             LinkedTaskList list = new LinkedTaskList();
             return list;
-        }
-        else {
+        } else {
             throw new NoSuchElementException();
         }
     }

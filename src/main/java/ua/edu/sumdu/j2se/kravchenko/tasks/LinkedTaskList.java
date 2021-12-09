@@ -1,8 +1,10 @@
 package ua.edu.sumdu.j2se.kravchenko.tasks;
 
 import java.util.NoSuchElementException;
+import java.util.stream.Stream;
 
-public class LinkedTaskList extends AbstractTaskList{
+
+public class LinkedTaskList  extends AbstractTaskList implements Cloneable {
     private class Node {
         Task task;
         Node prev;
@@ -19,12 +21,26 @@ public class LinkedTaskList extends AbstractTaskList{
         }
     }
 
-    private Node head, tail = null;
+    private Node head;
+    private Node tail;
 
+    @Override
     public int size() {
         return this.size;
     }
 
+    @Override
+    public Stream<Task> getStream() {
+        return super.getStream();
+    }
+
+    @Override
+    public ListTypes.types getType() {
+        return ListTypes.types.LINKED;
+    }
+
+
+    @Override
     public void add(Task task) {
         Node newNode = new Node(task);
 
@@ -60,6 +76,7 @@ public class LinkedTaskList extends AbstractTaskList{
         size++;
     }
 
+    @Override
     public boolean remove(Task task) {
         if (head == null) {
             throw new NoSuchElementException();
@@ -99,6 +116,7 @@ public class LinkedTaskList extends AbstractTaskList{
         }
     }
 
+    @Override
     public Task getTask(int index) {
         if (index >= 0 && index <= size) {
             if (index == 0) {
@@ -108,6 +126,7 @@ public class LinkedTaskList extends AbstractTaskList{
                 return tail.task;
             }
             else {
+
                 Node current = head;
                 for (int i = 0; i < index && current.next != null; ++i) {
                     current = current.next;
@@ -118,5 +137,10 @@ public class LinkedTaskList extends AbstractTaskList{
         } else {
             throw new NoSuchElementException();
         }
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
     }
 }

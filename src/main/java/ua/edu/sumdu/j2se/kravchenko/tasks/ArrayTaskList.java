@@ -1,6 +1,7 @@
 package ua.edu.sumdu.j2se.kravchenko.tasks;
 
-import java.util.NoSuchElementException;
+import java.util.Arrays;
+import java.util.stream.Stream;
 
 /**
  * Class ArrayTaskList - класс для зберігання массиву задач.
@@ -9,7 +10,7 @@ import java.util.NoSuchElementException;
  * @author Artem Kravchenko
  */
 
-public class ArrayTaskList extends AbstractTaskList {
+public class ArrayTaskList extends AbstractTaskList implements Cloneable {
     /** taskList - поле типу Task для створення тілу масиву початковим розміром size */
     private Task[] taskList = new Task[size];
 
@@ -21,6 +22,7 @@ public class ArrayTaskList extends AbstractTaskList {
      * Якщо наповненість масиву рівна його розміру, то масив розширяється і переприсвоюється посилання на новий.
      * @Task task - параметр для передачі задачі
      * */
+    @Override
     public void add(Task task) {
         if (this.capacity == this.size) {
             this.size += 1;
@@ -38,6 +40,7 @@ public class ArrayTaskList extends AbstractTaskList {
      * Повертається істина у випадку якщо така задача була в масиві.
      * @Task task - параметр для передачі задачі
      * */
+    @Override
     public boolean remove(Task task) {
         for (int i = 0; i < this.size; ++i) {
             if (this.taskList[i].equals(task)) {
@@ -59,19 +62,46 @@ public class ArrayTaskList extends AbstractTaskList {
     }
 
     /** Публічний метод для визначення розміру масиву. */
+    @Override
     public int size() {
         return this.size;
     }
+
+    @Override
+    public Stream<Task> getStream() {
+        return super.getStream();
+    }
+
+    @Override
+    public ListTypes.types getType() {
+        return ListTypes.types.ARRAY;
+    }
+
 
     /** Публічний метод для повертання задачі з масиву.
      * Задача повертається лише у випадку якщо вона там є.
      * @int index - параметр для індексу задачі в масиві.
      * */
+    @Override
     public Task getTask(int index) throws IndexOutOfBoundsException {
         if (index < 0 || index > this.size) {
             throw new IndexOutOfBoundsException();
         }
 
         return this.taskList[index];
+    }
+
+    @Override
+    public Object clone() throws CloneNotSupportedException {
+        return super.clone();
+    }
+
+    @Override
+    public String toString() {
+        return "ArrayTaskList{" +
+                "size=" + size +
+                ", taskList=" + Arrays.toString(taskList) +
+                ", capacity=" + capacity +
+                '}';
     }
 }

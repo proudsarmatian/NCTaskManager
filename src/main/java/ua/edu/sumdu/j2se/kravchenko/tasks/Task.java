@@ -1,5 +1,7 @@
 package ua.edu.sumdu.j2se.kravchenko.tasks;
 
+import java.util.Objects;
+
 /**
  * Class Task - класс для створення задач, виконання яких повязано з певним проміжком часу.
  * Вони можуть бути як повторюваними, так і одночасними.
@@ -8,7 +10,7 @@ package ua.edu.sumdu.j2se.kravchenko.tasks;
  * @author Artem Kravchenko
  */
 
-public class Task {
+public class Task extends Object implements Cloneable{
     /** title - поле для зберігання опису складу задачі */
     private String title;
 
@@ -178,6 +180,33 @@ public class Task {
         else {
             return -1;
         }
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Task task = (Task) o;
+        return time == task.time && isActive == task.isActive && isRepeated == task.isRepeated &&
+                start == task.start && end == task.end && interval == task.interval && title.equals(task.title);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(title, time, isActive, isRepeated, start, end, interval);
+    }
+
+    @Override
+    public Task clone() throws CloneNotSupportedException {
+        Task newTask = (Task) super.clone();
+        newTask.title = (this.title);
+        newTask.time = this.time;
+        newTask.isActive = this.isActive;
+        newTask.isRepeated = this.isRepeated;
+        newTask.start = this.start;
+        newTask.end = this.end;
+        newTask.interval = this.interval;
+        return newTask;
     }
 
     /** Метод для виводу інформації про обєкт у вигляді строки */
