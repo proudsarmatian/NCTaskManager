@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.kravchenko.tasks;
 
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 /**
@@ -11,47 +12,24 @@ import java.util.Objects;
  */
 
 public class Task extends Object implements Cloneable{
-    /** title - поле для зберігання опису складу задачі */
     private String title;
-
-    /** time - поле зберігання часу виконання задачі */
-    private int time;
-
-    /** isActive - поле, що запамятовує активна задача чи ні */
+    private LocalDateTime time;
     private boolean isActive;
-
-    /** isRepeated - поле, що запамятовує повторювана задача чи ні */
     private boolean isRepeated;
-
-    /** start - поле зберігання часу початка виконання повторюваної задачі */
-    private int start;
-
-    /** end - поле зберігання часу закінчення виконання повторюваної задачі */
-    private int end;
-
-    /** interval - поле зберігання інтервалу виконання повторюваної задачі */
+    private LocalDateTime start;
+    private LocalDateTime end;
     private int interval;
 
-    /** Конструктор для створення одночасної задачі
-     * @String title - параметр для опису задачі
-     * @int time - параметр для часу виконання задачі
-     * */
-    public Task(String title, int time) throws IllegalArgumentException {
-        if (time < 0) {
-            throw new IllegalArgumentException("Time must be greater than zero");
+    public Task(String title, LocalDateTime time) throws IllegalArgumentException {
+        if (time == null) {
+            throw new IllegalArgumentException("Illegal date");
         }
         this.title = title;
         this.time = time;
     }
 
-    /** Конструктор для створення повторюваної задачі
-     * @String title - параметр для опису задачі
-     * @int start - параметр для часу початку виконання задачі
-     * @int end - параметр для часу закінчення виконання задачі
-     * @int interval - параметр для часу інтервалу виконання задачі
-     * */
-    public Task(String title, int start, int end, int interval) throws IllegalArgumentException {
-        if (start < 0 || end < 0 || interval < 0) {
+    public Task(String title, LocalDateTime start, LocalDateTime end, int interval) throws IllegalArgumentException {
+        if (start == null || end == null || !end.isAfter(start) || interval < 0) {
             throw new IllegalArgumentException("Time must be greater than zero");
         }
         this.title = title;
@@ -61,125 +39,95 @@ public class Task extends Object implements Cloneable{
         this.isRepeated = true;
     }
 
-    /** Гетер для поля title */
     public String getTitle() {
-        return this.title;
+        return title;
     }
 
-    /** Сетер для поля title */
     public void setTitle(String title) {
         this.title = title;
     }
 
-    /** Гетер для поля isActive */
     public boolean isActive() {
-        return this.isActive;
+        return isActive;
     }
 
-    /** Сетер для поля isActive */
     public void setActive(boolean active) {
         this.isActive = active;
     }
 
-    /** Гетер для поля time, у випадку якщо задача повторюється, повертається час початку */
-    public int getTime(){
+    public LocalDateTime getTime(){
         if(isRepeated){
             return start;
         }
         else {
-            return this.time;
+            return time;
         }
     }
 
-    /** Сетер для поля time, якщо задача була повторюваною, то вона перестає бути повторюваною */
-    public void setTime(int time) {
-        this.isRepeated = false;
+    public void setTime(LocalDateTime time) {
+        if (time == null) {
+            throw new IllegalArgumentException();
+        }
+        if(isRepeated){
+            this.isRepeated = false;
+        }
         this.time = time;
     }
 
-    /** Гетер для поля start, у випадку якщо задача повторюється, повертається час початку */
-    public int getStartTime() {
+    public LocalDateTime getStartTime() {
         if(isRepeated) {
-            return this.start;
+            return start;
         }
         else {
-            return this.time;
+            return time;
         }
     }
 
-    /** Гетер для поля end, у випадку якщо задача повторюється, повертається час закінчення */
-    public int getEndTime() {
+    public LocalDateTime getEndTime() {
         if(isRepeated) {
-            return this.end;
+            return end;
         }
         else {
-            return this.time;
+            return time;
         }
     }
-
-    /** Гетер для поля interval, у випадку якщо задача повторюється, повертається інтервал, якщо ні - 0*/
     public int getRepeatInterval() {
         if(isRepeated) {
-            return this.interval;
+            return interval;
         }
         else {
             return 0;
         }
     }
 
-    /** Сетер для модифікації часу повторюваною задачі
-     * @int start - параметр для передачі часу початку задачі
-     * @int end - параметр для передачі часу закінчення задачі
-     * @int interval - параметр для передачі інтервалу повторювання задачі
-     * */
-    public void setTime(int start, int end, int interval) {
+    public void setTime(LocalDateTime start, LocalDateTime end, int interval) {
+        if (start == null || end == null || !end.isAfter(start) || interval <= 0) {
+            throw new IllegalArgumentException();
+        }
         this.start = start;
         this.end = end;
         this.interval = interval;
         this.isRepeated = true;
     }
 
-    /** Геттер для поля isRepeated */
     public boolean isRepeated() {
         return isRepeated;
     }
 
-    /** Метод для визначення часу наступного виконання задачі після вказаного часу
-     * @int current - параметр для передачі поточного часу
-     * */
-    public int nextTimeAfter(int current) {
-        if(isActive()) {
-            if(isRepeated) {
-                if (this.start > current) {
-                    return this.start;
-                }
-                else if(current > this.end) {
-                    return -1;
-                }
-                else {
-                    int next = this.start;
-
-                    while (next <= current) {
-                        next += this.interval;
-                    }
-                    if (next >= this.end) {
-                        return -1;
-                    }
-                    return next;
-                }
+    public LocalDateTime nextTimeAfter(LocalDateTime current) {
+        if (isActive()) {
+            if (!isRepeated()) {
+                if (time.isAfter(current)) {
+                    return time;
+                } else return null;
             }
-            else {
-                if (current < this.time) {
-                    return this.time;
-                }
-                else {
-                    return -1;
+            for (LocalDateTime i = start; i.isBefore(end) || i.equals(end); i = i.plusSeconds(interval)) {
+                if (current.isBefore(i)) {
+                    return i;
                 }
             }
         }
-        else {
-            return -1;
-        }
+        return null;
     }
 
     @Override
