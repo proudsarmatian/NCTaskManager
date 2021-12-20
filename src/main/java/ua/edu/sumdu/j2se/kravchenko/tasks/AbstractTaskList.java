@@ -1,5 +1,6 @@
 package ua.edu.sumdu.j2se.kravchenko.tasks;
 
+import java.time.LocalDateTime;
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.stream.Stream;
@@ -21,14 +22,6 @@ public abstract class AbstractTaskList implements Iterable<Task> {
         }
         return Arrays.stream(array);
     }
-
-    public final AbstractTaskList incoming(int from, int to) {
-        AbstractTaskList newList = TaskListFactory.createTaskList(getType());
-
-        getStream().filter(task -> task.nextTimeAfter(from) >= from && task.nextTimeAfter(from) <= to).forEach(newList::add);
-        return newList;
-    }
-
 
     @Override
     public Iterator<Task> iterator() {
